@@ -15,12 +15,13 @@ class MyPosts extends Component {
   };
 
   deleteThisPost = (post) => {
-    let newArray = [];
+    let array = [];
     this.state.data.map(current => {
-      if (post.id !== current.id) newArray.push(current)
+      if (post.id !== current.id) array.push(current)
     })
-    console.log(newArray)
-    this.setState({data: newArray})
+    let obj = {array}
+    this.setState({data: array})
+    localStorage.setItem('savedPhotos', JSON.stringify(obj))
   };
 
   render() {

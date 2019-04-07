@@ -21,6 +21,9 @@ class postsPage extends Component {
 
   removeAllHandler = () => {
     this.setState({posts: []});
+    let data = JSON.parse(localStorage.getItem('data'));
+    data.children = this.state.posts;
+    localStorage.setItem('data', JSON.stringify(data))
   };
 
   changeReadStatus = (post) => {
@@ -34,12 +37,15 @@ class postsPage extends Component {
   };
 
   deleteThisPost = (post) => {
-    let newArray = []
+    let newArray = [];
     this.state.posts.forEach(po => {
       if (po.data.id !== post.data.id) newArray.push(po)
     });
     this.setState({posts: newArray});
-  }
+    let data = JSON.parse(localStorage.getItem('data'));
+    data.children = this.state.posts;
+    localStorage.setItem('data', JSON.stringify(data))
+  };
 
   savePostHandler = () => {
     let items = JSON.parse(localStorage.getItem('savedPhotos'));
