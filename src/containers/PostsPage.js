@@ -1,15 +1,17 @@
 import React, {Component} from 'react';
-import {Grid, Button, Pagination, Image, Icon} from 'semantic-ui-react';
+import {Grid, Button, Pagination, Image, Icon, Container, Modal} from 'semantic-ui-react';
 import Post from "../components/Post";
 
 class postsPage extends Component {
   state = {
     posts: null,
     page: 1,
-    currentPost: null
+    currentPost: null,
+    modalOpen: false,
+    modalMessage: ''
   };
 
-  componentWillMount()  {
+  componentDidMount()  {
     let data = JSON.parse(localStorage.getItem('data'));
     this.setState({posts: data.children})
   };
@@ -36,38 +38,57 @@ class postsPage extends Component {
     window.scrollTo(0, 0);
   };
 
-  deleteThisPost = (post) => {
-    let newArray = [];
-    this.state.posts.forEach(po => {
-      if (po.data.id !== post.data.id) newArray.push(po)
-    });
-    this.setState({posts: newArray});
+  deleteThisPost = (postIndex) => {
     let data = JSON.parse(localStorage.getItem('data'));
-    data.children = this.state.posts;
+    data.children.splice(postIndex, 1);
+    this.setState({posts: data.children});
     localStorage.setItem('data', JSON.stringify(data))
   };
 
   savePostHandler = () => {
-    let items = JSON.parse(localStorage.getItem('savedPhotos'));
-    if (items === null) {
-      let array = [];
-      array.push(this.state.currentPost);
-      items = {array};
+    let items = JSON.parse(localStorage.getItem('savedPosts'));
+    if (items === null) items = [];
+
+    const currentPost = this.state.currentPost;
+    let exists = false;
+
+    items.some(item => {
+      exists = item.id === currentPost.id;
+      return exists;
+    });
+
+    if (exists) {
+      this.setState({modalOpen: true, modalMessage: 'This post is already added to your gallery'})
     }
     else {
-      items.array.push(this.state.currentPost);
+      items.push(currentPost);
+      localStorage.setItem('savedPosts', JSON.stringify(items))
+      this.setState({modalOpen: true, modalMessage: 'Post added to your gallery'})
     }
-    localStorage.setItem('savedPhotos', JSON.stringify(items))
-    alert('photo added to your gallery')
   };
+
+  close = () => this.setState({ modalOpen: false })
 
   render() {
     return (
+        <Container>
+          <Modal size='mini' open={this.state.modalOpen} onClose={this.close}>
+            <Modal.Content>
+              <p>{this.state.modalMessage}</p>
+            </Modal.Content>
+            <Modal.Actions>
+              <Button color='green' onClick={this.close} inverted>
+                <Icon name='checkmark' /> Gotcha
+              </Button>
+            </Modal.Actions>
+          </Modal>
+
+
         <Grid columns={2} style={{margin: '8px'}}>
           <Grid.Row>
             <Grid.Column width={10} style={{minWidth: '400px', marginBottom: '20px'}}>
               {
-                (this.state.currentPost) ?
+                (this.state.currentPost) &&
                     <div>
                       <h1>{this.state.currentPost.title}</h1>
                       <p color='grey'>posted by {this.state.currentPost.author}</p>
@@ -76,14 +97,10 @@ class postsPage extends Component {
                             <a href={this.state.currentPost.url}>{this.state.currentPost.url}</a>
                       }
                       <div style={{marginTop: '40px'}}>
-                        <Button.Group size='mini'>
-                          <Button>Hide</Button>
-                          <Button.Or />
-                          <Button positive onClick={this.savePostHandler}>Save</Button>
-                        </Button.Group>
+                        <Button positive onClick={this.savePostHandler}>Save</Button>
                         <Icon name='comment outline' color='orange' style={{marginLeft: '10px'}}/>{this.state.currentPost.num_comments}  Comments
                       </div>
-                    </div> : null
+                    </div>
               }
 
             </Grid.Column>
@@ -91,7 +108,7 @@ class postsPage extends Component {
             <Grid.Column width={6} widthSm>
               <Button basic color='orange' fluid style={{ minWidth: '250px'}} onClick={this.removeAllHandler}>Delete all posts</Button>
               {
-                (this.state.posts) ?
+                (this.state.posts) &&
                     <div style={{marginTop: '10px'}}>
                       {
                         this.state.posts.map((post, i)=> {
@@ -99,7 +116,7 @@ class postsPage extends Component {
                           let pageMax = (this.state.page * 10) - 1;
                           if (pageMin <= i && i <= pageMax) {
                             return (
-                                <Post post={post.data} key={post.data.id} currentPostHandler={() => this.currentPostHandler(post)} deleteThisPost={() => this.deleteThisPost(post)} imageWidth={'20%'}/>
+                                <Post post={post.data} key={post.data.id} currentPostHandler={() => this.currentPostHandler(post)} deleteThisPost={() => this.deleteThisPost(i)} imageWidth={'20%'}/>
                             )}
 
                         })
@@ -111,11 +128,11 @@ class postsPage extends Component {
                                   totalPages={5}
                                   onPageChange={this.handlePaginationChange}/>
                     </div>
-                    : null
               }
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        </Container>
     );
   };
 };
