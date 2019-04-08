@@ -11,3 +11,9 @@ Building the project to build folder.
 ```shell
 npm run build
 ```
+
+### Dev
+Run the project on localhost
+```shell
+npm start
+```
