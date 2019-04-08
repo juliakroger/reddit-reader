@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Container} from 'semantic-ui-react';
 import Post from '../components/Post';
 
-
 class MyPosts extends Component {
   state = {
     data: null

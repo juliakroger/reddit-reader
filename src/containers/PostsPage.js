@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Grid, Button, Pagination, Image, Icon, Container, Modal} from 'semantic-ui-react';
 import Post from "../components/Post";
-
+import axios from "axios";
 class postsPage extends Component {
   state = {
     posts: null,
@@ -11,9 +11,15 @@ class postsPage extends Component {
     modalMessage: ''
   };
 
-  componentDidMount()  {
-    let data = JSON.parse(localStorage.getItem('data'));
-    this.setState({posts: data.children})
+  componentWillMount()  {
+    axios.get('https://cors-anywhere.herokuapp.com/https://www.reddit.com/r/rickandmorty/top.json?limit=50')
+        .then(res => {
+          const data = res.data.data;
+          localStorage.setItem('data', JSON.stringify(data));
+          
+          this.setState({posts: data.children})
+        })
+        .catch(error => console.log(error))
   };
 
   handlePaginationChange = (e, { activePage }) => {
@@ -105,7 +111,7 @@ class postsPage extends Component {
 
             </Grid.Column>
 
-            <Grid.Column width={6} widthSm>
+            <Grid.Column width={6}>
               <Button basic color='orange' fluid style={{ minWidth: '250px'}} onClick={this.removeAllHandler}>Delete all posts</Button>
               {
                 (this.state.posts) &&
