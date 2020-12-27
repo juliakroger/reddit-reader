@@ -131,7 +131,7 @@ class PostsPage extends Component {
               )}
             </Grid.Column>
 
-            <Grid.Column width={6} widthSm>
+            <Grid.Column width={6} widthsm="true">
               <Button
                 basic
                 color="orange"

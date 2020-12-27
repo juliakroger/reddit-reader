@@ -1,9 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
-import 'semantic-ui-css/semantic.min.css';
+import React from "react";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { Provider } from "react-redux";
+import { store } from "redux/store/GlobalStore";
+
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import "semantic-ui-css/semantic.min.css";
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
 
 serviceWorker.unregister();

@@ -1,19 +1,17 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
+import { getMainPagePosts } from "redux/reducers/Main";
 import { Header } from "./components";
 import PostsPage from "./pages/PostsPage";
 import MyPosts from "./pages/MyPosts";
 
 const App = () => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    axios
-      .get("https://www.reddit.com/r/rickandmorty/top.json?limit=50")
-      .then((res) => {
-        localStorage.setItem("data", JSON.stringify(res.data.data));
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    dispatch(getMainPagePosts());
+  }, [dispatch]);
 
   return (
     <div>
