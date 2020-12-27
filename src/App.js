@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter, Route } from "react-router-dom";
-import Header from "../components/Header";
-import PostsPage from "./PostsPage";
-import MyPosts from "./MyPosts";
+import { Header } from "./components";
+import PostsPage from "./pages/PostsPage";
+import MyPosts from "./pages/MyPosts";
 
 const App = () => {
   useEffect(() => {
