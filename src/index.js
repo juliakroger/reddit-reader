@@ -6,6 +6,7 @@ import { store } from "redux/store/GlobalStore";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import "styles/Main.scss";
 import "semantic-ui-css/semantic.min.css";
 
 ReactDOM.render(
