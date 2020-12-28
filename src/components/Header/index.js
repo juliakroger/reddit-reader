@@ -4,7 +4,7 @@ import { ReactComponent as Reddit } from "icons/reddit.svg";
 import { ReactComponent as Settings } from "icons/settings.svg";
 import { ReactComponent as User } from "icons/user.svg";
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { headerRoutes } from "routes";
 const Header = () => {
   const { isAuthenticated } = useSelector(({ main }) => ({
@@ -20,10 +20,10 @@ const Header = () => {
       className={`header header--${isHeaderOpen ? "open" : "closed"}`}
     >
       <div>
-        <div className="header-logo">
+        <Link to="/" className="header-logo">
           <Reddit className="header-logo-icon" />
           {isHeaderOpen && <div className="header-logo-title">reddit</div>}
-        </div>
+        </Link>
         <div className="header-links">
           {headerRoutes.map(({ title, Icon, path, exact }) => (
             <NavLink
