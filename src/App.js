@@ -14,11 +14,11 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="app">
       <BrowserRouter>
         <Header />
-        <Route exact path="/" component={PostsPage} />
-        <Route path="/saved" component={MyPosts} />
+        {/* <Route exact path="/" component={PostsPage} /> */}
+        {/* <Route path="/saved" component={MyPosts} /> */}
       </BrowserRouter>
     </div>
   );

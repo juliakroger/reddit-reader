@@ -1,1 +1,24 @@
 @import "./Constants.scss";
+@import "./Header.scss";
+
+.app {
+  background: $background;
+  min-height: 100vh;
+  font-family: "Nunito", sans-serif;
+}
+
+.simple-button {
+  padding: 8px;
+  color: $grey;
+  border: 2px solid $grey;
+  border-radius: 6px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.simple-button:hover {
+  background-color: $grey;
+  color: $font-color;
+}
